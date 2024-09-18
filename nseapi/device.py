@@ -7,7 +7,8 @@ import urllib
 import urllib.request
 import xmltodict
 
-import nseapi.exceptions as nse_err
+from nseapi import exceptions as nse_err
+from nseapi.types import Command
 
 logger = logging.getLogger(__name__)
 
@@ -173,6 +174,9 @@ class Device:
     
     def execute(self, xml, ignore_warning=False, **kwargs):
         encode = None if sys.version < "3" else "unicode"
+        # check if xml is a Command instance
+        if isinstance(xml, Command):
+            xml = xml.to_xml()
         self._req.data = xml.encode(encode)
         try:
             with urllib.request.urlopen(self._req, timeout=self.timeout) as rsp:
