@@ -1,9 +1,6 @@
-from nseapi.types import CharArray, FixedCharArray
+from nseapi.types import CharArray, FixedCharArray, MACAddress
 
-LOGIN = {
-    'attributes': {
-        'COMMAND': 'RADIUS_LOGIN'
-    },
+LOGIN = 'RADIUS_LOGIN' , {
     'elements': {
         'SUB_USER_NAME': {
             'type': CharArray(96), 
@@ -16,7 +13,7 @@ LOGIN = {
             'help_text': 'Subscriber\'s password (char [128], required)'
         },
         'SUB_MAC_ADDR': {
-            'type': FixedCharArray(12), 
+            'type': MACAddress, 
             'required': True,
             'help_text': 'Subscriber\'s MAC address (char [12], required)'
         },
@@ -28,10 +25,7 @@ LOGIN = {
     }
 }
 
-LOGOUT = {
-    'attributes': {
-        'COMMAND': 'RADIUS_LOGOUT'
-    },
+LOGOUT = 'RADIUS_LOGOUT', {
     'elements': {
         'SUB_USER_NAME': {
             'type': CharArray(96), 
@@ -39,7 +33,7 @@ LOGOUT = {
             'help_text': 'Subscriber\'s username (char [96], optional if MAC address is present)'
         },
         'SUB_MAC_ADDR': {
-            'type': FixedCharArray(12), 
+            'type': MACAddress, 
             'required': False,
             'help_text': 'Subscriber\'s MAC address (char [12], optional if username is present)'
         },
