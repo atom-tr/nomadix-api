@@ -1,39 +1,34 @@
 import ipaddress
-from nseapi.types import CharArray, FixedCharArray, FixedList, MACAddress
+from nseapi.types import Char, FixedChar, FixedList, MACAddress
 
 _ADD = {
     'BANDWIDTH_MAX_DOWN': {
         'type': int, 
         'required': False,
-        'help_text': "Maximum Downstream bandwidth (int, optional)"
+        'help_text': "Maximum Downstream bandwidth"
     },
     'BANDWIDTH_MAX_UP': {
         'type': int, 
         'required': False,
-        'help_text': "Maximum Upstream bandwidth (int, optional)"
+        'help_text': "Maximum Upstream bandwidth"
     },
     'CLASS_NAME': {
-        'type': CharArray(64), 
+        'type': Char(64), 
         'required': False,
         'help_text': (
-            "Class name (char [64], optional). "
             "Indicates the class that traffic to/from "
             "this user should be assigned to for Class-Based Queuing purposes"
         )
     },
     'DHCP_SUBNET': {
-        'type': CharArray(10), 
+        'type': Char(10), 
         'required': False,
-        'help_text': (
-            "DHCP subnet (char [10], optional). "
-            "Subnet based on configured DHCP subnets in the NSE"
-        )
+        'help_text': "Subnet based on configured DHCP subnets in the NSE"
     },
     'QOS_POLICY': {
         'type': str, 
         'required': False,
         'help_text': (
-            "QoS Policy (str, optional). "
             "Select and add the QoS Policy that is configured on the NSE "
             "to the profile for the user"
         )
@@ -41,30 +36,31 @@ _ADD = {
     'SMTP_REDIRECT': {
         'type': bool, 
         'required': False,
-        'help_text': (
-            "SMTP Redirection (bool, optional). "
-            "Either TRUE or FALSE. Default: TRUE"
-        )
+        'help_text': "SMTP Redirection Default: TRUE"
     },
     'USER_DEF1': {
-        'type': CharArray(128), 
+        'type': Char(128), 
         'required': False,
         'help_text': (
-            "User definable string (char [128], optional). Default: empty"
+            "User definable string. Default: empty"
         )
     },
     'USER_DEF2': {
-        'type': CharArray(128), 
+        'type': Char(128), 
         'required': False,
         'help_text': (
-            "User definable string (char [128], optional). Default: empty"
+            "User definable string. Default: empty"
         )
     },
 }
 
 SUBSCRIBER_ADD = 'SUBSCRIBER_ADD', {
     'attributes': {
-        'MAC_ADDR': {'type': MACAddress, 'required': False},
+        'MAC_ADDR': {
+            'type': MACAddress, 
+            'required': False,
+            'help_text': 'Subscriber\'s MAC address'
+        },
     }, 
     'elements': {
         **_ADD,
@@ -72,7 +68,7 @@ SUBSCRIBER_ADD = 'SUBSCRIBER_ADD', {
             'type': int, 
             'required': False,
             'help_text': (
-                "Downstream Bandwidth (int, optional). "
+                "Downstream Bandwidth. "
                 "Legacy element that is obsolete because of Bandwidth_Max_Down"
             )
         },
@@ -80,20 +76,19 @@ SUBSCRIBER_ADD = 'SUBSCRIBER_ADD', {
             'type': int, 
             'required': False,
             'help_text': (
-                "Upstream Bandwidth (int, optional). "
+                "Upstream Bandwidth. "
                 "Legacy element that is obsolete because of Bandwidth_Max_Up"
             )
         },
         'CONFIRMATION': {
-            'type': CharArray(10), 
+            'type': Char(10), 
             'required': False,
-            'help_text': "Confirmation number/ID (char [10], optional)"
+            'help_text': "Confirmation number/ID"
         },
         'COUNTDOWN': {
             'type': FixedList('Countdown', ('0', '1')), 
             'required': False,
             'help_text': (
-                "Countdown (int, optional). "
                 "0 off, 1 enabled. If not present, defaults to off. "
                 "Note: If a billing plan is specified and it is an X-over-Y billing plan, "
                 "then the countdown element, if present, is irrelevant and is ignored"
@@ -109,58 +104,52 @@ SUBSCRIBER_ADD = 'SUBSCRIBER_ADD', {
                 },
             },
             'help_text': (
-                "Expiry time (optional). "
+                "Expiry time. "
                 "UNITS attribute: Either SECONDS, MINUTES, HOURS or DAYS"
             )
         },
         'IP_TYPE': {
             'type': FixedList('IPType', ('PRIVATE', 'PUBLIC')), 
             'required': False,
-            'help_text': (
-                "IP type (char [10], optional). "
-                "Either 'PRIVATE' or 'PUBLIC'"
-            )
+            'help_text': "IP type. Either 'PRIVATE' or 'PUBLIC'"
         },
         'PAYMENT': {
             'type': int, 
             'required': False,
-            'help_text': "Amount charged for access (int, optional)"
+            'help_text': "Amount charged for access"
         },
         'PAYMENT_METHOD': {
             'type': FixedList('PaymentMethod', ('RADIUS', 'PMS', 'CREDIT_CARD', 'ROOM_OPEN')), 
             'required': False,
-            'help_text': (
-                "Payment method (char [10], optional but recommended). "
-                "Either 'RADIUS', 'PMS', 'CREDIT_CARD', or 'ROOM_OPEN'"
-            )
+            'help_text': "Payment method (optional but recommended). "
         },
         'PLAN': {
             'type': int, 
             'required': False,
             'help_text': (
-                "Billing plan number (int, optional). "
+                "Billing plan number. "
                 "Relates to the X over Y plan number in Billing Plans setup. "
                 "If used for X over Y, USER_NAME and PASSWORD are required"
             )
         },
         'ROOM_NUMBER': {
-            'type': CharArray(8), 
+            'type': Char(8), 
             'required': False,
-            'help_text': "Room number (char [8], optional)"
+            'help_text': "Room number"
         },
         'USER_NAME': {
-            'type': CharArray(96), 
+            'type': Char(96), 
             'required': False,
-            'help_text': "Subscriber's username (char [96], optional)"
+            'help_text': "Subscriber's username"
         },
         'PASSWORD': {
-            'type': CharArray(128), 
+            'type': Char(128), 
             'required': False,
             'attributes': {
                 'ENCRYPT': {'type': bool, 'required': False},
             },
             'help_text': (
-                "Subscriber's password (char [128], optional). "
+                "Subscriber's password. "
                 "ENCRYPT attribute: Either TRUE or FALSE"
             )
         },
@@ -169,15 +158,19 @@ SUBSCRIBER_ADD = 'SUBSCRIBER_ADD', {
 
 DEVICE_ADD = 'DEVICE_ADD', {
     'attributes': {
-        'MAC_ADDR': {'type': MACAddress, 'required': True},
+        'MAC_ADDR': {
+            'type': MACAddress, 
+            'required': True,
+            'help_text': 'Device\'s MAC address'
+        },
     }, 
     'elements': {
         **_ADD,
         'DEVICE_NAME': {
-            'type': CharArray(96), 
+            'type': Char(96), 
             'required': False,
             'help_text': (
-                "A short name for the device (char[96]) to assist administrator "
+                "A short name for the device to assist administrator "
                 "or operator recognition of it."
             )
         },
@@ -221,10 +214,7 @@ GROUP_ADD = 'GROUP_ADD', {
         'DHCP_TYPE': {
             'type': FixedList('DHCPType', ('PRIVATE', 'PUBLIC')), 
             'required': False,
-            'help_text': (
-                "DHCP type (char[10], optional). "
-                "Either 'PRIVATE', 'PUBLIC'"
-            )
+            'help_text': "DHCP type"
         },
         'EXPIRY_TIME': {
             'type': int, 
@@ -241,10 +231,10 @@ GROUP_ADD = 'GROUP_ADD', {
             )
         },
         'GROUP_NAME': {
-            'type': CharArray(96), 
+            'type': Char(96), 
             'required': False,
             'help_text': (
-                "A short name for the group (char[96]) to assist administrator "
+                "A short name for the group to assist administrator "
                 "or operator recognition of it."
             )
         },
@@ -252,31 +242,29 @@ GROUP_ADD = 'GROUP_ADD', {
             'type': int, 
             'required': False,
             'help_text': (
-                "Maximum number of users in the group (int, optional). "
-                "Default: no limit"
+                "Maximum number of users in the group. Default: no limit"
             )
         },
         'PAYMENT': {
             'type': int, 
             'required': False,
             'help_text': (
-                "Amount charged for access (int, optional). Default: no limit"
+                "Amount charged for access. Default: no limit"
             )
         },
         'USER_NAME': {
-            'type': CharArray(96), 
+            'type': Char(96), 
             'required': True,
-            'help_text': "Group's username (char[96])."
+            'help_text': "Group's username."
         },
         'PASSWORD': {
-            'type': CharArray(128), 
+            'type': Char(128), 
             'required': True,
             'attributes': {
                 'ENCRYPT': {'type': bool, 'required': False},
             },
             'help_text': (
-                "Group's password (char[128]). "
-                "ENCRYPT attribute: Either TRUE or FALSE"
+                "Group's password. ENCRYPT attribute: Either TRUE or FALSE"
             )
         },
         'VALID_UNTIL': {
@@ -301,9 +289,9 @@ ACCESS_CODE_ADD = 'ACCESS_CODE_ADD', {
     'elements': {
         **_ADD,
         'USER_NAME': {
-            'type': CharArray(96), 
+            'type': Char(96), 
             'required': True,
-            'help_text': "Access Code's username (char[96])."
+            'help_text': "Access Code's username."
         },
         'EXPIRY_TIME': {
             'type': int, 
@@ -318,10 +306,7 @@ ACCESS_CODE_ADD = 'ACCESS_CODE_ADD', {
         'DHCP_TYPE': {
             'type': FixedList('DHCPType', ('PRIVATE', 'PUBLIC')), 
             'required': False,
-            'help_text': (
-                "DHCP type (char[10], optional). "
-                "Either 'PRIVATE', 'PUBLIC'"
-            )
+            'help_text': "DHCP type"
         },
         'GROUP_USERS_MAX': {
             'type': int, 
@@ -365,3 +350,153 @@ SET_BANDWIDTH_UP = 'SET_BANDWIDTH_UP', {
         }
     }
 }
+
+SET_BANDWIDTH_DOWN = 'SET_BANDWIDTH_DOWN', {
+    'attributes': {
+        'SUBSCRIBER': {
+            'type': MACAddress,
+            'required': True,
+            'help_text': "Subscriber's MAC address"
+        }
+    },
+    'elements': {
+        'BANDWIDTH_DOWN': {
+            'type': int,
+            'required': True,
+            'help_text': (
+                'Number measured in Kbps '
+                '(i.e. for 128,000 bits per second, enter 128)'
+            )
+        }
+    }
+}
+
+SET_BANDWIDTH_MAX_DOWN = 'SET_BANDWIDTH_MAX_DOWN', {
+    'attributes': {
+        'SUBSCRIBER': {
+            'type': MACAddress,
+            'required': True,
+            'help_text': "Subscriber's MAC address"
+        }
+    },
+    'elements': {
+        'BANDWIDTH_MAX_DOWN': {
+            'type': int,
+            'required': True,
+            'help_text': (
+                'Number measured in Kbps '
+                '(i.e. for 128,000 bits per second, enter 128)'
+            )
+        }
+    }
+}
+
+SET_BANDWIDTH_MAX_UP = 'SET_BANDWIDTH_MAX_UP', {
+    'attributes': {
+        'SUBSCRIBER': {
+            'type': MACAddress,
+            'required': True,
+            'help_text': "Subscriber's MAC address"
+        }
+    },
+    'elements': {
+        'BANDWIDTH_MAX_UP': {
+            'type': int,
+            'required': True,
+            'help_text': (
+                'Number measured in Kbps '
+                '(i.e. for 128,000 bits per second, enter 128)'
+            )
+        }
+    }
+}
+
+USER_PAYMENT = ...
+
+USER_DELETE = 'USER_DELETE', {
+    'elements': {
+        'USER': {
+            'type': str,
+            'required': True,
+            'attributes': {
+                'ID_TYPE': {
+                    'type': FixedList('IP_TYPE', ['MAC_ADDR', 'USER_NAME']),
+                    'required': True
+                }
+            },
+            'help_text': (
+                "ID_TYPE attribute: MAC_ADDR or USER_NAME "
+                "MAC_ADDR: Subscriber's MAC address (char[12]) "
+                "| USER_NAME: Subscriber's username (char [96)"
+            )
+        }
+    }
+}
+
+DEVICE_DELETE = 'DEVICE_DELETE', {
+    'attributes': {
+        'MAC_ADDR': {
+            'type': MACAddress,
+            'required': True,
+            'help_text': 'MAC address of the device'
+        }
+    }
+}
+
+USER_QUERY = 'USER_QUERY', {
+    'elements': {
+        'USER': {
+            'type': str,
+            'required': True,
+            'attributes': {
+                'ID_TYPE': {
+                    'type': FixedList('IP_TYPE', ['MAC_ADDR', 'USER_NAME']),
+                    'required': True
+                }
+            },
+            'help_text': (
+                "ID_TYPE attribute: MAC_ADDR or USER_NAME "
+                "MAC_ADDR: Subscriber's MAC address (char[12]) "
+                "| USER_NAME: Subscriber's username (char [96)"
+            )
+        }
+    }
+}
+
+SUBSCRIBER_QUERY_CURRENT = 'SUBSCRIBER_QUERY_CURRENT', {
+    'elements': {
+        'MAC_ADDR': {
+            'type': MACAddress,
+            'required': True,
+            'help_text': 'Subscriber\'s MAC address'
+        }
+    }
+}
+
+
+SUBSCRIBER_QUERY_AUTH = 'SUBSCRIBER_QUERY_AUTH', {
+    'elements': {
+        'MAC_ADDR': {
+            'type': MACAddress,
+            'required': False,
+            'help_text': 'Subscriber\'s MAC address'
+        },
+        'USER_NAME': {
+            'type': Char(96),
+            'required': False,
+            'help_text': 'Subscriber\'s name'
+        },
+    }
+}
+
+USER_AUTHORIZE = 'USER_AUTHORIZE', {
+    'attributes': {
+        'MAC_ADDR': {
+            'type': MACAddress,
+            'required': True,
+            'help_text': 'Subscriber\'s MAC address'
+        }
+    }
+}
+
+USER_PURCHASE = ...

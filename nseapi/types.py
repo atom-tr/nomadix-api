@@ -6,6 +6,8 @@ from enum import Enum, auto
 
 import xmltodict
 
+from nseapi.utils import generate_docstring
+
 
 class FixedList:
     def __init__(self, name, units):
@@ -23,13 +25,16 @@ class FixedList:
 
     def __str__(self):
         return f"{self.name}({', '.join(self.units)})"
+    
+    @property
+    def __name__(self): return self.__str__()
 
     def list(self):
         return list(self.units)
 
 T = TypeVar('T', bound=str)
 
-class CharArray:
+class Char:
     def __new__(cls, max_length: int):
         class VarChar(str):
             def __new__(cls, value: str) -> 'VarChar':
@@ -38,10 +43,10 @@ class CharArray:
                 if len(value) > max_length:
                     raise ValueError(f"String length must be at most {max_length} characters")
                 return str.__new__(cls, value)
-        VarChar.__name__ = f'CharArray({max_length})'
+        VarChar.__name__ = f'Char({max_length})'
         return VarChar
 
-class FixedCharArray:
+class FixedChar:
     def __new__(cls, size: int):
         class FixedChar(str):
             def __new__(cls, value: str) -> 'FixedChar':
@@ -50,7 +55,7 @@ class FixedCharArray:
                 if len(value) != size:
                     raise ValueError(f"String length must be exactly {size} characters")
                 return str.__new__(cls, value)
-        FixedChar.__name__ = f'FixedCharArray({size})'
+        FixedChar.__name__ = f'FixedChar({size})'
         return FixedChar
     
 class MACAddress(Sequence):
@@ -157,25 +162,4 @@ class Command:
 
     def help(self):
         """Generate help text for the command."""
-        help_text = f"Help for {self._type}:\n"
-        
-        if 'attributes' in self._spec:
-            help_text += "\nAttributes:\n"
-            for key, spec in self._spec['attributes'].items():
-                if key == 'COMMAND':
-                    continue
-                help_text += f"  {key}: "
-                if 'help_text' in spec:
-                    help_text += f"{spec['help_text']}\n"
-                else:
-                    help_text += f"Type: {spec['type'].__name__}, Required: {spec['required']}\n"
-        if 'elements' in self._spec:
-            help_text += "\nElements:\n"
-            for key, spec in self._spec['elements'].items():
-                help_text += f"  {key}: "
-                if 'help_text' in spec:
-                    help_text += f"{spec['help_text']}\n"
-                else:
-                    help_text += f"Type: {spec['type'].__name__}, Required: {spec['required']}\n"
-        
-        return help_text
+        return f"Help on class {self._type}:\n" + generate_docstring(self._type, self._spec)
