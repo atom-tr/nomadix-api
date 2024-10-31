@@ -12,8 +12,9 @@ from nseapi.types import Command
 
 logger = logging.getLogger(__name__)
 
+
 class Device:
-    
+
     def __init__(self, *args, **kwargs):
         # ----------------------------------------
         # setup instance connection/open variables
@@ -23,20 +24,19 @@ class Device:
             raise ValueError("You must provide 'host' value")
         self._port = kwargs.get("port", 1111)
         self._conn_open_timeout = kwargs.get("conn_open_timeout", 30)
-        self._auth_user = kwargs.get("user")  or kwargs.get("usr")
+        self._auth_user = kwargs.get("user") or kwargs.get("usr")
         self._auth_password = kwargs.get("password") or kwargs.get("passwd")
 
         # initialize instance variables
         self._conn = None
         # public attributes
         self.connected = False
-    
+
     @property
     def connected(self):
         return self._connected
-    
-    _auto_probe = 0  # default is no auto-probe
 
+    _auto_probe = 0  # default is no auto-probe
 
     @property
     def hostname(self):
@@ -48,14 +48,14 @@ class Device:
             if (self._hostname != "localhost")
             else self.facts.get("hostname")
         )
-    
+
     @property
     def port(self):
         """
         :returns: the port (str) to connect to the NSE device
         """
         return self._port
-    
+
     @property
     def timeout(self):
         """
@@ -85,7 +85,6 @@ class Device:
         """
         return self._auth_user
 
-
     @property
     def password(self):
         """
@@ -105,7 +104,7 @@ class Device:
     def connected(self, value):
         if value in [True, False]:
             self._connected = value
-    
+
     def probe(self, timeout=5, intvtimeout=1):
         """
         Probe the device to determine if the Device can accept a remote
@@ -135,9 +134,11 @@ class Device:
                 s.shutdown(socket.SHUT_RDWR)
                 s.close()
                 break
-            except:
+            except socket.timeout:
                 time.sleep(1)
-                pass
+            except Exception as e:
+                print(f"An error occurred: {e}")
+                time.sleep(1)
         else:
             probe_ok = False
 
@@ -148,18 +149,16 @@ class Device:
         Opens a connection to the device using existing login/auth
         information.
         """
-        pass
         auto_probe = kwargs.get("auto_probe", self._auto_probe)
         if auto_probe:
             if not self.probe(auto_probe):
                 raise nse_err.ProbeError(self)
-        
+
         url = f"http://{ self.hostname }:{ str(self._port) }/usg/command.xml"
         headers = {"Content-Type": "application/x-www-form-urlencoded"}
         self._req = urllib.request.Request(url, headers=headers, method="POST")
         self.connected = True
         return self
-
 
     def close(self):
         """
@@ -167,11 +166,10 @@ class Device:
         """
         if self.connected is True:
             self.connected = False
-    
-    
+
     def __repr__(self):
         return "NSE(%s)" % self.hostname
-    
+
     def execute(self, xml, ignore_warning=False, **kwargs):
         encode = None if sys.version < "3" else "unicode"
         # check if xml is a Command instance
@@ -186,9 +184,9 @@ class Device:
                 except xmltodict.expat.ExpatError:
                     raise nse_err.ParseError(self, _rsp)
                 else:
-                    data = _data.get('USG')
-                    if data['@RESULT'] == 'ERROR':
-                        raise nse_err.USGError('Execute request failed', data)
+                    data = _data.get("USG")
+                    if data["@RESULT"] == "ERROR":
+                        raise nse_err.USGError("Execute request failed", data)
                     return data
         except Exception as e:
             raise nse_err.ConnectError(self, e)
@@ -208,4 +206,3 @@ class Device:
             except Exception as ex:
                 # exit should not raise any exception
                 logger.error("Close in context manager hit exception: {}".format(ex))
-        

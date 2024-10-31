@@ -1,41 +1,49 @@
-from nseapi.types import Char, FixedChar, MACAddress
+from nseapi.types import MACAddress, BaseCommand
+from nseapi.commands.options import radius as _radius
 
-LOGIN = 'RADIUS_LOGIN' , {
-    'elements': {
-        'SUB_USER_NAME': {
-            'type': Char(96), 
-            'required': True,
-            'help_text': 'Subscriber\'s username'
-        },
-        'SUB_PASSWORD': {
-            'type': Char(128), 
-            'required': True,
-            'help_text': 'Subscriber\'s password'
-        },
-        'SUB_MAC_ADDR': {
-            'type': MACAddress, 
-            'required': True,
-            'help_text': 'Subscriber\'s MAC address'
-        },
-        'PORTAL_SUB_ID': {
-            'type': Char(37), 
-            'required': False,
-            'help_text': 'Unique identifier that the Portal Page web server can send to the NSE which will be sent back with status response'
-        },
-    }
-}
+__all__ = ("LOGIN", "LOGOUT")
 
-LOGOUT = 'RADIUS_LOGOUT', {
-    'elements': {
-        'SUB_USER_NAME': {
-            'type': Char(96), 
-            'required': False,
-            'help_text': 'Subscriber\'s username (optional if MAC address is present)'
-        },
-        'SUB_MAC_ADDR': {
-            'type': MACAddress, 
-            'required': False,
-            'help_text': 'Subscriber\'s MAC address (optional if username is present)'
-        },
-    }
-}
+
+class LOGIN(BaseCommand):
+    """
+    Initiates RADIUS authentication via Portal Page web server.
+
+    Kwargs:
+        - SUB_USER_NAME: Subscriber's username (char [96])
+        - SUB_PASSWORD: Subscriber's password (char [128])
+        - SUB_MAC_ADDR: Subscriber's MAC address (char [12])
+        - PORTAL_SUB_ID (optional): Unique identifier for status response (char [36])
+    """
+
+    _type, _spec, *_ = _radius.LOGIN
+
+    def __init__(
+        self,
+        sub_user_name: str,
+        sub_password: str,
+        sub_mac_addr: MACAddress,
+        *args,
+        **kwargs
+    ):
+        self._transform(
+            sub_user_name=sub_user_name,
+            sub_password=sub_password,
+            sub_mac_addr=sub_mac_addr,
+            *args,
+            **kwargs
+        )
+
+
+class LOGOUT(BaseCommand):
+    """
+    Command to logout a subscriber.
+
+    Kwargs:
+        - SUB_USER_NAME: Subscriber's username (char [96])
+        - SUB_MAC_ADDR: Subscriber's MAC address (char [12])
+    """
+
+    _type, _spec, *_ = _radius.LOGOUT
+
+    def __init__(self, sub_user_name: str, sub_mac_addr: MACAddress):
+        self._transform(sub_user_name=sub_user_name, sub_mac_addr=sub_mac_addr)
