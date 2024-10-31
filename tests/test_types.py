@@ -1,6 +1,13 @@
 # -*- coding: UTF-8 -*-
+import sys
+import os
 import pytest
-from nseapi.types import MACAddress
+
+try:
+    from nseapi.types import MACAddress
+except ImportError:
+    sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
+    from nseapi.types import MACAddress
 
 
 def test_type_mac_address():
