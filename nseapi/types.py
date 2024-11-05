@@ -117,7 +117,7 @@ class Command:
 
     def _transform(self, *args, **kwargs):
         """Transform input to dictionary based on command spec"""
-
+        # cleanup kwargs
         cleaned_kwargs = {
             k.upper(): (
                 v
@@ -126,7 +126,7 @@ class Command:
             )
             for k, v in kwargs.items()
         }
-
+        # mapping args to kwargs
         if args:
             attribute_keys = list(self._spec.get("attributes", {}).keys())
             element_keys = list(self._spec.get("elements", {}).keys())
@@ -141,6 +141,8 @@ class Command:
 
     def validate(self):
         for key, spec in self._spec.get("attributes", {}).items():
+            if "value" in spec:
+                continue
             if spec["required"] and key not in self._input_data:
                 raise ValueError(f"Attribute {key} is required for {self._type}")
             if key in self._input_data:
@@ -157,22 +159,27 @@ class Command:
         try:
             if is_element and isinstance(value, dict):
                 element_value = value.get("VALUE", "")
-                value["VALUE"] = spec["type"](element_value)
+                value["VALUE"] = spec.get("type", str)(element_value)
                 if "attributes" in spec:
                     for attr_key, attr_spec in spec["attributes"].items():
                         if attr_key in value:
-                            value[attr_key] = attr_spec["type"](value[attr_key])
+                            value[attr_key] = attr_spec.get("type", str)(
+                                value[attr_key]
+                            )
             else:
-                self._input_data[key] = spec["type"](value)
+                self._input_data[key] = spec.get("type", str)(value)
         except (TypeError, ValueError) as e:
             raise TypeError(f"{key}: {str(e)}")
 
     def to_xml(self):
         self.validate()
         usg_dict = {"@COMMAND": self._type}
-        for key in self._spec.get("attributes", {}):
+        for key, spec in self._spec.get("attributes", {}).items():
             if key in self._input_data:
                 usg_dict[f"@{key}"] = str(self._input_data[key])
+            elif "value" in spec:
+                usg_dict[f"@{key}"] = str(spec[key])
+
         for key in self._spec.get("elements", {}):
             if key in self._input_data:
                 element_value = self._input_data[key]
@@ -187,24 +194,20 @@ class Command:
 
     def help(self):
         """Generate help text for the command."""
-        return f"Help on class {self._type}:\n" + generate_docstring(
-            self._type, self._spec
-        )
+        return f"Help on class {self._type}:\n" + generate_docstring(self._spec)
 
 
 class BaseCommand(Command):
 
     @classmethod
-    def config(self, _type, _spec):
-        self._type = _type
-        self._spec = _spec
+    def config(cls, _type, _spec):
+        cls._type = _type
+        cls._spec = _spec
 
     def __init__(self, *args, **kwargs):
         self._transform(*args, **kwargs)
 
     @classmethod
-    def help(self):
+    def help(cls):
         """Generate help text for the command."""
-        return f"Help on class {self._type}:\n" + generate_docstring(
-            self._type, self._spec
-        )
+        return f"Help on class {cls._type}:\n" + generate_docstring(cls._spec)

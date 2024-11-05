@@ -1,5 +1,6 @@
 import ipaddress
 from nseapi.types import Char, FixedList, MACAddress
+from nseapi.commands.options import _bandwidth, _expiry_time, _subscriber
 
 _ADD = {
     "BANDWIDTH_MAX_DOWN": {
@@ -52,11 +53,7 @@ _ADD = {
 
 SUBSCRIBER_ADD = "SUBSCRIBER_ADD", {
     "attributes": {
-        "MAC_ADDR": {
-            "type": MACAddress,
-            "required": False,
-            "help_text": "Subscriber's MAC address",
-        },
+        "MAC_ADDR": {"required": False, **_subscriber},
     },
     "elements": {
         **_ADD,
@@ -90,22 +87,7 @@ SUBSCRIBER_ADD = "SUBSCRIBER_ADD", {
                 "then the countdown element, if present, is irrelevant and is ignored"
             ),
         },
-        "EXPIRY_TIME": {
-            "type": int,
-            "required": False,
-            "attributes": {
-                "UNITS": {
-                    "type": FixedList(
-                        "TimeUnit", ("DAYS", "HOURS", "MINUTES", "SECONDS")
-                    ),
-                    "required": False,
-                },
-            },
-            "help_text": (
-                "Expiry time. "
-                "UNITS attribute: Either SECONDS, MINUTES, HOURS or DAYS"
-            ),
-        },
+        "EXPIRY_TIME": {"required": False, **_expiry_time},
         "IP_TYPE": {
             "type": FixedList("IPType", ("PRIVATE", "PUBLIC")),
             "required": False,
@@ -144,9 +126,7 @@ SUBSCRIBER_ADD = "SUBSCRIBER_ADD", {
             "attributes": {
                 "ENCRYPT": {"type": bool, "required": False},
             },
-            "help_text": (
-                "Subscriber's password. " "ENCRYPT attribute: Either TRUE or FALSE"
-            ),
+            "help_text": "Subscriber's password. ENCRYPT attribute: Either TRUE or FALSE",
         },
     },
 }
@@ -211,22 +191,7 @@ GROUP_ADD = "GROUP_ADD", {
             "required": False,
             "help_text": "DHCP type",
         },
-        "EXPIRY_TIME": {
-            "type": int,
-            "required": True,
-            "attributes": {
-                "UNITS": {
-                    "type": FixedList(
-                        "TimeUnit", ("DAYS", "HOURS", "MINUTES", "SECONDS")
-                    ),
-                    "required": False,
-                },
-            },
-            "help_text": (
-                "Expiry time (optional). "
-                "UNITS attribute: Either SECONDS, MINUTES, HOURS or DAYS"
-            ),
-        },
+        "EXPIRY_TIME": {"required": True, **_expiry_time},
         "GROUP_NAME": {
             "type": Char(96),
             "required": False,
@@ -284,18 +249,7 @@ ACCESS_CODE_ADD = "ACCESS_CODE_ADD", {
             "required": True,
             "help_text": "Access Code's username.",
         },
-        "EXPIRY_TIME": {
-            "type": int,
-            "required": True,
-            "attributes": {
-                "UNITS": {
-                    "type": FixedList(
-                        "TimeUnit", ("DAYS", "HOURS", "MINUTES", "SECONDS")
-                    ),
-                    "required": False,
-                },
-            },
-        },
+        "EXPIRY_TIME": {"required": True, **_expiry_time},
         "DHCP_TYPE": {
             "type": FixedList("DHCPType", ("PRIVATE", "PUBLIC")),
             "required": False,
@@ -325,83 +279,23 @@ ACCESS_CODE_ADD = "ACCESS_CODE_ADD", {
 }
 
 SET_BANDWIDTH_UP = "SET_BANDWIDTH_UP", {
-    "attributes": {
-        "SUBSCRIBER": {
-            "type": MACAddress,
-            "required": True,
-            "help_text": "Subscriber's MAC address",
-        }
-    },
-    "elements": {
-        "BANDWIDTH_UP": {
-            "type": int,
-            "required": True,
-            "help_text": (
-                "Number measured in Kbps "
-                "(i.e. for 128,000 bits per second, enter 128)"
-            ),
-        }
-    },
+    "attributes": {"SUBSCRIBER": {"required": True, **_subscriber}},
+    "elements": {"BANDWIDTH_UP": {"required": True, **_bandwidth}},
 }
 
 SET_BANDWIDTH_DOWN = "SET_BANDWIDTH_DOWN", {
-    "attributes": {
-        "SUBSCRIBER": {
-            "type": MACAddress,
-            "required": True,
-            "help_text": "Subscriber's MAC address",
-        }
-    },
-    "elements": {
-        "BANDWIDTH_DOWN": {
-            "type": int,
-            "required": True,
-            "help_text": (
-                "Number measured in Kbps "
-                "(i.e. for 128,000 bits per second, enter 128)"
-            ),
-        }
-    },
+    "attributes": {"SUBSCRIBER": {"required": True, **_subscriber}},
+    "elements": {"BANDWIDTH_DOWN": {"required": True, **_bandwidth}},
 }
 
 SET_BANDWIDTH_MAX_DOWN = "SET_BANDWIDTH_MAX_DOWN", {
-    "attributes": {
-        "SUBSCRIBER": {
-            "type": MACAddress,
-            "required": True,
-            "help_text": "Subscriber's MAC address",
-        }
-    },
-    "elements": {
-        "BANDWIDTH_MAX_DOWN": {
-            "type": int,
-            "required": True,
-            "help_text": (
-                "Number measured in Kbps "
-                "(i.e. for 128,000 bits per second, enter 128)"
-            ),
-        }
-    },
+    "attributes": {"SUBSCRIBER": {"required": True, **_subscriber}},
+    "elements": {"BANDWIDTH_MAX_DOWN": {"required": True, **_bandwidth}},
 }
 
 SET_BANDWIDTH_MAX_UP = "SET_BANDWIDTH_MAX_UP", {
-    "attributes": {
-        "SUBSCRIBER": {
-            "type": MACAddress,
-            "required": True,
-            "help_text": "Subscriber's MAC address",
-        }
-    },
-    "elements": {
-        "BANDWIDTH_MAX_UP": {
-            "type": int,
-            "required": True,
-            "help_text": (
-                "Number measured in Kbps "
-                "(i.e. for 128,000 bits per second, enter 128)"
-            ),
-        }
-    },
+    "attributes": {"SUBSCRIBER": {"required": True, **_subscriber}},
+    "elements": {"BANDWIDTH_MAX_UP": {"required": True, **_bandwidth}},
 }
 
 USER_PAYMENT = ...
@@ -457,23 +351,13 @@ USER_QUERY = "USER_QUERY", {
 }
 
 SUBSCRIBER_QUERY_CURRENT = "SUBSCRIBER_QUERY_CURRENT", {
-    "elements": {
-        "MAC_ADDR": {
-            "type": MACAddress,
-            "required": True,
-            "help_text": "Subscriber's MAC address",
-        }
-    }
+    "elements": {"MAC_ADDR": {"required": True, **_subscriber}}
 }
 
 
 SUBSCRIBER_QUERY_AUTH = "SUBSCRIBER_QUERY_AUTH", {
     "elements": {
-        "MAC_ADDR": {
-            "type": MACAddress,
-            "required": False,
-            "help_text": "Subscriber's MAC address",
-        },
+        "MAC_ADDR": {"required": False, **_subscriber},
         "USER_NAME": {
             "type": Char(96),
             "required": False,
@@ -483,13 +367,7 @@ SUBSCRIBER_QUERY_AUTH = "SUBSCRIBER_QUERY_AUTH", {
 }
 
 USER_AUTHORIZE = "USER_AUTHORIZE", {
-    "attributes": {
-        "MAC_ADDR": {
-            "type": MACAddress,
-            "required": True,
-            "help_text": "Subscriber's MAC address",
-        }
-    }
+    "attributes": {"MAC_ADDR": {"required": True, **_subscriber}}
 }
 
 USER_PURCHASE = ...

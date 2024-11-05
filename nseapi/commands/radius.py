@@ -1,5 +1,5 @@
 from nseapi.types import MACAddress, BaseCommand
-from nseapi.commands.options import radius as _radius
+from nseapi.commands.options import radius as spec
 
 __all__ = ("LOGIN", "LOGOUT")
 
@@ -15,7 +15,7 @@ class LOGIN(BaseCommand):
         - PORTAL_SUB_ID (optional): Unique identifier for status response (char [36])
     """
 
-    _type, _spec, *_ = _radius.LOGIN
+    _type, _spec, *_ = spec.LOGIN
 
     def __init__(
         self,
@@ -43,7 +43,7 @@ class LOGOUT(BaseCommand):
         - SUB_MAC_ADDR: Subscriber's MAC address (char [12])
     """
 
-    _type, _spec, *_ = _radius.LOGOUT
+    _type, _spec, *_ = spec.LOGOUT
 
     def __init__(self, sub_user_name: str, sub_mac_addr: MACAddress):
         self._transform(sub_user_name=sub_user_name, sub_mac_addr=sub_mac_addr)

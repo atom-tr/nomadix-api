@@ -1,5 +1,5 @@
 from nseapi.types import MACAddress, BaseCommand
-from nseapi.commands.options import subscriber as _subscriber
+from nseapi.commands.options import subscriber as spec
 
 
 class ADD_USER(BaseCommand):
@@ -27,9 +27,9 @@ class ADD_USER(BaseCommand):
         otherwise, access is granted only when attached to the specified VLAN.
     """
 
-    _type, _spec, *_ = _subscriber.SUBSCRIBER_ADD
+    _type, _spec, *_ = spec.SUBSCRIBER_ADD
 
-    def __init__(self, mac_addr, *args, **kwargs):
+    def __init__(self, mac_addr: MACAddress, *args, **kwargs):
         self._transform(MAC_ADDR=mac_addr, *args, **kwargs)
 
 
@@ -46,9 +46,9 @@ class ADD_DEVICE(BaseCommand):
     refer to the ADD_DEVICE method's documentation by running ADD_DEVICE.help().
     """
 
-    _type, _spec, *_ = _subscriber.DEVICE_ADD
+    _type, _spec, *_ = spec.DEVICE_ADD
 
-    def __init__(self, mac_addr, device_name, *args, **kwargs):
+    def __init__(self, mac_addr: MACAddress, device_name: str, *args, **kwargs):
         self._transform(MAC_ADDR=mac_addr, DEVICE_NAME=device_name, *args, **kwargs)
 
 
@@ -73,9 +73,9 @@ class ADD_GROUP(BaseCommand):
         - VLAN (0 ≤ VLAN ≤ 4095, optional): 802.1Q VLAN port
     """
 
-    _type, _spec, *_ = _subscriber.GROUP_ADD
+    _type, _spec, *_ = spec.GROUP_ADD
 
-    def __init__(self, mac_addr, *args, **kwargs):
+    def __init__(self, mac_addr: MACAddress, *args, **kwargs):
         self._transform(MAC_ADDR=mac_addr, *args, **kwargs)
 
 
@@ -100,9 +100,9 @@ class ADD_ACCESS_CODE(BaseCommand):
         - VLAN (0 ≤ VLAN ≤ 4095, optional): 802.1Q VLAN port
     """
 
-    _type, _spec, *_ = _subscriber.ACCESS_CODE_ADD
+    _type, _spec, *_ = spec.ACCESS_CODE_ADD
 
-    def __init__(self, mac_addr, *args, **kwargs):
+    def __init__(self, mac_addr: MACAddress, *args, **kwargs):
         self._transform(MAC_ADDR=mac_addr, *args, **kwargs)
 
 
@@ -116,7 +116,7 @@ class SET_BANDWIDTH_UP(BaseCommand):
             (i.e. for 128,000 bits per second, enter 128)
     """
 
-    _type, _spec, *_ = _subscriber.ACCESS_CODE_ADD
+    _type, _spec, *_ = spec.ACCESS_CODE_ADD
 
     def __init__(self, subscriber: MACAddress, bandwidth_up: int):
         self._transform(SUBSCRIBER=subscriber, BANDWIDTH_UP=bandwidth_up)

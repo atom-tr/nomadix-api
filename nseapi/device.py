@@ -144,17 +144,16 @@ class Device:
 
         return probe_ok
 
-    def open(self, *args, **kwargs):
+    def open(self, **kwargs):
         """
         Opens a connection to the device using existing login/auth
         information.
         """
         auto_probe = kwargs.get("auto_probe", self._auto_probe)
-        if auto_probe:
-            if not self.probe(auto_probe):
-                raise nse_err.ProbeError(self)
+        if auto_probe and not self.probe(auto_probe):
+            raise nse_err.ProbeError(self)
 
-        url = f"http://{ self.hostname }:{ str(self._port) }/usg/command.xml"
+        url = f"http://{self.hostname}:{str(self._port)}/usg/command.xml"
         headers = {"Content-Type": "application/x-www-form-urlencoded"}
         self._req = urllib.request.Request(url, headers=headers, method="POST")
         self.connected = True
@@ -170,7 +169,7 @@ class Device:
     def __repr__(self):
         return "NSE(%s)" % self.hostname
 
-    def execute(self, xml, ignore_warning=False, **kwargs):
+    def execute(self, xml):
         encode = None if sys.version < "3" else "unicode"
         # check if xml is a Command instance
         if isinstance(xml, Command):
