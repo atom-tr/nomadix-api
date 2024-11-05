@@ -12,11 +12,11 @@ class USER_PAYMENT(BaseCommand):
 
     Required options:
 
-    - USER_NAME: Subscriber's username (char [96]).
-    - PASSWORD: Subscriber's password (char [128]).
-    - ROOM_NUMBER: Room number (Port-Location 'Location' number) of access (char [8]).
-    - MAC_ADDR: MAC address of user for post-paid PMS and 2-way PMS (char [12]).
-    - REG_NUMBER: Reservation number of hotel guest for Micros Fidelio FIAS compliant Query and Post interface (char [24]).
+    - USER_NAME (str): Subscriber's username.
+    - PASSWORD (str): Subscriber's password.
+    - ROOM_NUMBER (str): Room number (Port-Location 'Location' number) of access.
+    - MAC_ADDR (str): MAC address of user for post-paid PMS and 2-way PMS.
+    - REG_NUMBER (str): Reservation number of hotel guest for Micros Fidelio FIAS compliant Query and Post interface.
 
     For a complete list of available kwargs options, refer to the USER_PAYMENT method's documentation by running USER_PAYMENT.help().
     """
@@ -50,14 +50,14 @@ class USER_PURCHASE(BaseCommand):
 
     Required options:
 
-    - ROOM_NUMBER: Room number (Port-Location 'Location' number) (char [8]).
-    - ITEM_CODE: Code of the item being purchased (char [N]).
-    - ITEM_DESCRIPTION: Description of the item (char [N]).
-    - ITEM_AMOUNT: Item amount (float).
-    - ITEM_TAX: Item tax (float).
-    - ITEM_TOTAL: Item total (float).
-    - REAL_NAME: Name in the PMS DATABASE. Only needed for 2-way PMS (char [N]).
-    - REG_NUMBER: Registration number required for 2-way FIAS PMS (char [N]).
+    - ROOM_NUMBER (str): Room number (Port-Location 'Location' number).
+    - ITEM_CODE (str): Code of the item being purchased.
+    - ITEM_DESCRIPTION (str): Description of the item.
+    - ITEM_AMOUNT (float): Item amount.
+    - ITEM_TAX (float): Item tax.
+    - ITEM_TOTAL (float): Item total.
+    - REAL_NAME (str): Name in the PMS DATABASE. Only needed for 2-way PMS.
+    - REG_NUMBER (str): Registration number required for 2-way FIAS PMS.
 
     For a complete list of available kwargs options, refer to the USER_PURCHASE method's documentation by running USER_PURCHASE.help().
     """
@@ -98,8 +98,8 @@ class PMS_PENDING_TRANSACTION(BaseCommand):
 
     Input:
 
-    - TRANSACTION_ID: (32 bit unsigned Integer) Used to match commands with PMS_TRANSACTION_RESPONSE messages.
-    - DATA: The data that will be sent to the attached PMS system. Before sending, the data is framed with an ETX (hex 02) and an STX (hex 03) and appended with a checksum (char [N]).
+    - TRANSACTION_ID (32 bit unsigned Integer): Used to match commands with PMS_TRANSACTION_RESPONSE messages.
+    - DATA (str): The data that will be sent to the attached PMS system. Before sending, the data is framed with an ETX (hex 02) and an STX (hex 03) and appended with a checksum.
     """
 
     _type, _spec, *_ = spec.PMS_PENDING_TRANSACTION
@@ -114,8 +114,8 @@ class ROOM_SET_ACCESS(BaseCommand):
 
     Input:
 
-    - ROOM_NUMBER: Room number (Port-Location 'Location' number) (char [8]).
-    - ACCESS_MODE: Either ROOM_OPEN, ROOM_CHARGE, or ROOM_BLOCK (FixedList).
+    - ROOM_NUMBER (str): Room number (Port-Location 'Location' number).
+    - ACCESS_MODE (str): Either ROOM_OPEN, ROOM_CHARGE, or ROOM_BLOCK.
     """
 
     _type, _spec, *_ = spec.ROOM_SET_ACCESS
@@ -130,7 +130,7 @@ class ROOM_QUERY_ACCESS(BaseCommand):
 
     Input:
 
-    - ROOM_NUMBER: Room number (Port-Location 'Location' number) (char [8]).
+    - ROOM_NUMBER (str): Room number (Port-Location 'Location' number).
     """
 
     _type, _spec, *_ = spec.ROOM_QUERY_ACCESS
