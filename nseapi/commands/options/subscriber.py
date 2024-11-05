@@ -1,6 +1,6 @@
 import ipaddress
 from nseapi.types import Char, FixedList, MACAddress
-from nseapi.commands.options import _bandwidth, _expiry_time, _subscriber
+from nseapi.commands.options import _expiry_time, _subscriber
 
 _ADD = {
     "BANDWIDTH_MAX_DOWN": {
@@ -278,27 +278,6 @@ ACCESS_CODE_ADD = "ACCESS_CODE_ADD", {
     }
 }
 
-SET_BANDWIDTH_UP = "SET_BANDWIDTH_UP", {
-    "attributes": {"SUBSCRIBER": {"required": True, **_subscriber}},
-    "elements": {"BANDWIDTH_UP": {"required": True, **_bandwidth}},
-}
-
-SET_BANDWIDTH_DOWN = "SET_BANDWIDTH_DOWN", {
-    "attributes": {"SUBSCRIBER": {"required": True, **_subscriber}},
-    "elements": {"BANDWIDTH_DOWN": {"required": True, **_bandwidth}},
-}
-
-SET_BANDWIDTH_MAX_DOWN = "SET_BANDWIDTH_MAX_DOWN", {
-    "attributes": {"SUBSCRIBER": {"required": True, **_subscriber}},
-    "elements": {"BANDWIDTH_MAX_DOWN": {"required": True, **_bandwidth}},
-}
-
-SET_BANDWIDTH_MAX_UP = "SET_BANDWIDTH_MAX_UP", {
-    "attributes": {"SUBSCRIBER": {"required": True, **_subscriber}},
-    "elements": {"BANDWIDTH_MAX_UP": {"required": True, **_bandwidth}},
-}
-
-USER_PAYMENT = ...
 
 USER_DELETE = "USER_DELETE", {
     "elements": {
@@ -369,5 +348,3 @@ SUBSCRIBER_QUERY_AUTH = "SUBSCRIBER_QUERY_AUTH", {
 USER_AUTHORIZE = "USER_AUTHORIZE", {
     "attributes": {"MAC_ADDR": {"required": True, **_subscriber}}
 }
-
-USER_PURCHASE = ...

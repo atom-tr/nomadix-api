@@ -1,6 +1,8 @@
 from nseapi.types import MACAddress, BaseCommand
 from nseapi.commands.options import subscriber as spec
 
+__all__ = ["ADD_USER", "ADD_DEVICE", "ADD_GROUP", "ADD_ACCESS_CODE"]
+
 
 class ADD_USER(BaseCommand):
     """
@@ -104,19 +106,3 @@ class ADD_ACCESS_CODE(BaseCommand):
 
     def __init__(self, mac_addr: MACAddress, *args, **kwargs):
         self._transform(MAC_ADDR=mac_addr, *args, **kwargs)
-
-
-class SET_BANDWIDTH_UP(BaseCommand):
-    """
-    Set the Bandwidth Up for an authorized subscriber.
-
-    Kwargs:
-        - subscriber: Subscriber's MAC address
-        - bandwidth_up: Number measured in Kbps
-            (i.e. for 128,000 bits per second, enter 128)
-    """
-
-    _type, _spec, *_ = spec.ACCESS_CODE_ADD
-
-    def __init__(self, subscriber: MACAddress, bandwidth_up: int):
-        self._transform(SUBSCRIBER=subscriber, BANDWIDTH_UP=bandwidth_up)

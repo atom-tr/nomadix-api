@@ -2,8 +2,9 @@ from nseapi.types import MACAddress, BaseCommand
 from . import radius
 from . import subscriber
 from . import pms
+from . import network
 
-__all__ = ["radius", "subscriber", "pms", "CACHE_UPDATE"]
+__all__ = ["radius", "subscriber", "pms", "network", "CACHE_UPDATE"]
 
 
 class CACHE_UPDATE(BaseCommand):

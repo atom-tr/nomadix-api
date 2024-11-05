@@ -1,6 +1,14 @@
 from nseapi.types import MACAddress, BaseCommand
 from nseapi.commands.options import pms as spec
 
+__all__ = [
+    "USER_PAYMENT",
+    "USER_PURCHASE",
+    "PMS_PENDING_TRANSACTION",
+    "ROOM_SET_ACCESS",
+    "ROOM_QUERY_ACCESS",
+]
+
 
 class USER_PAYMENT(BaseCommand):
     """
