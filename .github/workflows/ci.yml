@@ -38,6 +38,12 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.organization=atomtr
+            -Dsonar.projectKey=nomadix-api
+            -Dsonar.python.coverage.reportPaths=coverage.xml
+            -Dsonar.sources=nseapi/
 
       - name: Upload results to Codecov
         uses: codecov/codecov-action@v4
