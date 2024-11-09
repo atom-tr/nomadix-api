@@ -152,13 +152,13 @@ class Command:
             if "value" in spec:
                 continue
             if spec["required"] and key not in self._input_data:
-                raise ValueError(f"Attribute {key} is required for {self._type}")
+                raise TypeError(f"Attribute {key} is required for {self._type}")
             if key in self._input_data:
                 self._validate_value(key, spec)
 
         for key, spec in self._spec.get("elements", {}).items():
             if spec["required"] and key not in self._input_data:
-                raise ValueError(f"Element {key} is required for {self._type}")
+                raise TypeError(f"Element {key} is required for {self._type}")
             if key in self._input_data:
                 self._validate_value(key, spec, is_element=True)
 

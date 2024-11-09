@@ -50,13 +50,6 @@ class TestCommand:
         with pytest.raises(TypeError):
             Command("TestType", spec, attr1=1.1, elem1="e").validate()
 
-    # def test_command_missing_required_attribute(self, spec):
-    #     with pytest.raises(ValueError, match="ELEM1 is a required element"):
-    #         Command("TestType", spec, attr1="value1").to_xml()
-
-    #     with pytest.raises(ValueError):
-    #         Command("TestType", spec).validate()
-
 
 class TestBaseCommand:
 
