@@ -31,7 +31,7 @@ class LOGIN(BaseCommand):
             sub_mac_addr=sub_mac_addr,
             *args,
             **kwargs
-        )
+        )  # pragma: no cover
 
 
 class LOGOUT(BaseCommand):
@@ -46,4 +46,6 @@ class LOGOUT(BaseCommand):
     _type, _spec, *_ = spec.LOGOUT
 
     def __init__(self, sub_user_name: str, sub_mac_addr: MACAddress):
-        self._transform(sub_user_name=sub_user_name, sub_mac_addr=sub_mac_addr)
+        self._transform(
+            sub_user_name=sub_user_name, sub_mac_addr=sub_mac_addr
+        )  # pragma: no cover

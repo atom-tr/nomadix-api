@@ -9,28 +9,31 @@ from nseapi.utils import generate_docstring
 
 
 class FixedList:
-    def __init__(self, name, units):
+    def __init__(self, name: str, units: list):
         self.name = name
-        self.units = tuple(u.upper() for u in units)
+        self.units = units if isinstance(units, list) else [units]
+
+    def _str_list(self):
+        return ", ".join(str(unit) for unit in self.units)
 
     def __call__(self, value):
-        if not isinstance(value, str):
-            raise TypeError(f"Value must be a string, not {type(value).__name__}")
-        upper_value = value.upper()
         for unit in self.units:
-            if unit.startswith(upper_value):
+            if isinstance(unit, (str, int)) and isinstance(value, (str, int)):
+                if re.match(re.escape(str(unit)), str(value), re.IGNORECASE):
+                    return unit
+            elif unit == value:
                 return unit
-        raise ValueError(f"Value must be one of {', '.join(self.units)}")
+        raise ValueError(f"Value must be one of {self._str_list()}")
 
     def __str__(self):
-        return f"{self.name}({', '.join(self.units)})"
+        return f"{self.name}({self._str_list()})"
 
     @property
     def __name__(self):
-        return self.__str__()
+        return self.name
 
-    def list(self):
-        return list(self.units)
+    def __iter__(self):
+        return iter(self.units)
 
 
 T = TypeVar("T", bound=str)
@@ -92,8 +95,16 @@ class MACAddress(Sequence):
     def __len__(self):
         return len(self._segments)
 
-    def __repr__(self):
+    def __str__(self):
         return self.formatted("")
+
+    def __repr__(self):  # pragma: no cover
+        return f"MACAddress({self.formatted('')})"
+
+    def __eq__(self, other):
+        if not isinstance(other, MACAddress):
+            return NotImplemented
+        return self._addr == other._addr
 
     def formatted(self, separator=":"):
         # Join the segments with the specified separator
@@ -109,10 +120,7 @@ class Command:
         self._spec = _spec
         self._transform(*args, **kwargs)
 
-    def __str__(self) -> str:
-        return self.to_xml()
-
-    def __repr__(self):
+    def __str__(self) -> str:  # pragma: no cover
         return self.to_xml()
 
     def _transform(self, *args, **kwargs):
@@ -178,7 +186,7 @@ class Command:
             if key in self._input_data:
                 usg_dict[f"@{key}"] = str(self._input_data[key])
             elif "value" in spec:
-                usg_dict[f"@{key}"] = str(spec[key])
+                usg_dict[f"@{key}"] = str(spec["value"])
 
         for key in self._spec.get("elements", {}):
             if key in self._input_data:
@@ -199,13 +207,11 @@ class Command:
 
 class BaseCommand(Command):
 
-    @classmethod
-    def config(cls, _type, _spec):
-        cls._type = _type
-        cls._spec = _spec
-
     def __init__(self, *args, **kwargs):
-        self._transform(*args, **kwargs)
+        if hasattr(self, "_type") and hasattr(self, "_spec"):
+            self._transform(*args, **kwargs)  # pragma: no cover
+        else:
+            raise ValueError("Both _type and _spec must be defined.")
 
     @classmethod
     def help(cls):

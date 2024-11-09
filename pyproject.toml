@@ -19,6 +19,12 @@ classifiers = [
   "Topic :: Software Development :: Libraries"
 ]
 
+[tool.poetry]
+name = "nseapi"
+version = "0.0.1"
+description = "Python API library for the Nomadix Service Engine"
+authors = ["atomtr <thai.tr@hotmail.com>"]
+
 [tool.poetry.dependencies]
 python = "^3.8.0"
 xmltodict = "^0.13.0"

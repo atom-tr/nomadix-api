@@ -79,7 +79,7 @@ SUBSCRIBER_ADD = "SUBSCRIBER_ADD", {
             "help_text": "Confirmation number/ID",
         },
         "COUNTDOWN": {
-            "type": FixedList("Countdown", ("0", "1")),
+            "type": FixedList("Countdown", (0, 1)),
             "required": False,
             "help_text": (
                 "0 off, 1 enabled. If not present, defaults to off. "

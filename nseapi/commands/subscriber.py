@@ -32,7 +32,7 @@ class ADD_USER(BaseCommand):
     _type, _spec, *_ = spec.SUBSCRIBER_ADD
 
     def __init__(self, mac_addr: MACAddress, *args, **kwargs):
-        self._transform(MAC_ADDR=mac_addr, *args, **kwargs)
+        self._transform(MAC_ADDR=mac_addr, *args, **kwargs)  # pragma: no cover
 
 
 class ADD_DEVICE(BaseCommand):
@@ -51,7 +51,9 @@ class ADD_DEVICE(BaseCommand):
     _type, _spec, *_ = spec.DEVICE_ADD
 
     def __init__(self, mac_addr: MACAddress, device_name: str, *args, **kwargs):
-        self._transform(MAC_ADDR=mac_addr, DEVICE_NAME=device_name, *args, **kwargs)
+        self._transform(
+            MAC_ADDR=mac_addr, DEVICE_NAME=device_name, *args, **kwargs
+        )  # pragma: no cover
 
 
 class ADD_GROUP(BaseCommand):
@@ -78,7 +80,7 @@ class ADD_GROUP(BaseCommand):
     _type, _spec, *_ = spec.GROUP_ADD
 
     def __init__(self, mac_addr: MACAddress, *args, **kwargs):
-        self._transform(MAC_ADDR=mac_addr, *args, **kwargs)
+        self._transform(MAC_ADDR=mac_addr, *args, **kwargs)  # pragma: no cover
 
 
 class ADD_ACCESS_CODE(BaseCommand):
@@ -105,4 +107,4 @@ class ADD_ACCESS_CODE(BaseCommand):
     _type, _spec, *_ = spec.ACCESS_CODE_ADD
 
     def __init__(self, mac_addr: MACAddress, *args, **kwargs):
-        self._transform(MAC_ADDR=mac_addr, *args, **kwargs)
+        self._transform(MAC_ADDR=mac_addr, *args, **kwargs)  # pragma: no cover

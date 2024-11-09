@@ -10,7 +10,11 @@ def generate_docstring(spec: dict = {}, desc: str = ""):
 
     if "attributes" in spec:
         desc += "\nAttributes:\n"
-        desc += "\n".join([_key(k, s) for k, s in spec["attributes"].items()])
+        for k, s in spec["attributes"].items():
+            if "value" in s:
+                desc += f"\n{k} = {s['value']}"
+            else:
+                desc += "\n" + _key(k, s)
 
     if "elements" in spec:
         desc += "\nElements:\n"

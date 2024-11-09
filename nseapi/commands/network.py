@@ -42,49 +42,49 @@ class SET_BANDWIDTH_MAX_DOWN(BaseCommand):
     _type, _spec, *_ = spec.SET_BANDWIDTH_MAX_DOWN
 
 
-class DAT_TABLE_RSP(BaseCommand):
-    """
-    Provides the Dynamic Address Translation (DAT) table, which shows the network address translation information for active sessions
-    """
+# class DAT_TABLE_RSP(BaseCommand):
+#     """
+#     Provides the Dynamic Address Translation (DAT) table, which shows the network address translation information for active sessions
+#     """
 
-    _type, _spec, *_ = spec.DAT_TABLE_RSP
-
-
-class ACTIVE_ROUTES(BaseCommand):
-    """
-    Lists active routes in the routing table
-    """
-
-    _type, _spec, *_ = spec.ACTIVE_ROUTES
+#     _type, _spec, *_ = spec.DAT_TABLE_RSP
 
 
-class PERSISTENT_ROUTES(BaseCommand):
-    """
-    Lists persistent routes that are saved in the device's configuration and are restored after a reboot.
-    """
+# class ACTIVE_ROUTES(BaseCommand):
+#     """
+#     Lists active routes in the routing table
+#     """
 
-    _type, _spec, *_ = spec.PERSISTENT_ROUTES
-
-
-class STATIC_ROUTES(BaseCommand):
-    """
-    Lists static routes that are configured manually and are not saved in persistent storage
-    """
-
-    _type, _spec, *_ = spec.STATIC_ROUTES
+#     _type, _spec, *_ = spec.ACTIVE_ROUTES
 
 
-class CBQUEUEING_CLASS(BaseCommand):
-    """
-    Manages Class-Based Queuing (CBQ) classes, which allow for prioritizing and controlling network traffic based on different criteria
-    """
+# class PERSISTENT_ROUTES(BaseCommand):
+#     """
+#     Lists persistent routes that are saved in the device's configuration and are restored after a reboot.
+#     """
 
-    _type, _spec, *_ = spec.CBQUEUEING_CLASS
+#     _type, _spec, *_ = spec.PERSISTENT_ROUTES
 
 
-class WAN_STATUS(BaseCommand):
-    """
-    Reports the status of the primary WAN interface
-    """
+# class STATIC_ROUTES(BaseCommand):
+#     """
+#     Lists static routes that are configured manually and are not saved in persistent storage
+#     """
 
-    _type, _spec, *_ = spec.WAN_STATUS
+#     _type, _spec, *_ = spec.STATIC_ROUTES
+
+
+# class CBQUEUEING_CLASS(BaseCommand):
+#     """
+#     Manages Class-Based Queuing (CBQ) classes, which allow for prioritizing and controlling network traffic based on different criteria
+#     """
+
+#     _type, _spec, *_ = spec.CBQUEUEING_CLASS
+
+
+# class WAN_STATUS(BaseCommand):
+#     """
+#     Reports the status of the primary WAN interface
+#     """
+
+#     _type, _spec, *_ = spec.WAN_STATUS

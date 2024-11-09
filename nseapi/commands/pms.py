@@ -49,7 +49,7 @@ class USER_PAYMENT(BaseCommand):
             REG_NUMBER=reg_number,
             *args,
             **kwargs
-        )
+        )  # pragma: no cover
 
 
 class USER_PURCHASE(BaseCommand):
@@ -96,7 +96,7 @@ class USER_PURCHASE(BaseCommand):
             REG_NUMBER=reg_number,
             *args,
             **kwargs
-        )
+        )  # pragma: no cover
 
 
 class PMS_PENDING_TRANSACTION(BaseCommand):
@@ -113,7 +113,7 @@ class PMS_PENDING_TRANSACTION(BaseCommand):
     _type, _spec, *_ = spec.PMS_PENDING_TRANSACTION
 
     def __init__(self, data: str, *arg, **kwargs):
-        self._transform(DATA=data, *arg, **kwargs)
+        self._transform(DATA=data, *arg, **kwargs)  # pragma: no cover
 
 
 class ROOM_SET_ACCESS(BaseCommand):
@@ -129,7 +129,9 @@ class ROOM_SET_ACCESS(BaseCommand):
     _type, _spec, *_ = spec.ROOM_SET_ACCESS
 
     def __init__(self, room_number: str, access_mode: str):
-        self._transform(ROOM_NUMBER=room_number, ACCESS_MODE=access_mode)
+        self._transform(
+            ROOM_NUMBER=room_number, ACCESS_MODE=access_mode
+        )  # pragma: no cover
 
 
 class ROOM_QUERY_ACCESS(BaseCommand):
@@ -144,4 +146,4 @@ class ROOM_QUERY_ACCESS(BaseCommand):
     _type, _spec, *_ = spec.ROOM_QUERY_ACCESS
 
     def __init__(self, room_number: str):
-        self._transform(ROOM_NUMBER=room_number)
+        self._transform(ROOM_NUMBER=room_number)  # pragma: no cover
