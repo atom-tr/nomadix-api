@@ -27,4 +27,4 @@ authors = ["atomtr <thai.tr@hotmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8.0"
-xmltodict = "^0.13.0"
+xmltodict = "^0.14.2"
